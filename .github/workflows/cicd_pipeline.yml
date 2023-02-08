@@ -37,6 +37,8 @@ jobs:
         aws-region: eu-west-2
         role-session-name: OIDCSession
 
+    - run: aws sts get-caller-identity
+    
     - name: Setup Terraform with specified version on the runner
       uses: hashicorp/setup-terraform@v2
       with:
