@@ -24,6 +24,5 @@ provider "aws" {
 
 resource "aws_s3_bucket" "stg" {
   bucket = "${var.environment}-test"
-
   force_destroy = true
 }
