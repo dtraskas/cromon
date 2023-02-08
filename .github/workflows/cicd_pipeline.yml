@@ -1,4 +1,4 @@
-name: "Terraform Infrastructure Change Management Pipeline with GitHub Actions"
+name: "Terraform CI/CD"
  
 on:
  push:
@@ -11,15 +11,16 @@ on:
    - main
   #  paths:
   #  - terraform/**
-  
-jobs:
- terraform:
-   name: "Terraform Infrastructure Change Management"
-   runs-on: ubuntu-latest
-   permissions:
+
+permissions:
       id-token: write
       contents: read
-      
+
+jobs:
+ deploy-to-staging:
+   name: "Terraform Staging Deployment"
+   runs-on: ubuntu-latest
+   environment: staging
    defaults:
      run:
        shell: bash
@@ -27,17 +28,22 @@ jobs:
        working-directory: ./terraform
  
    steps:
-     - name: Checkout the repository to the runner
-       uses: actions/checkout@v2
+    - name: Checkout the repository to the runner
+      uses: actions/checkout@v2
  
-     - name: Setup Terraform with specified version on the runner
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{secrets.DEPLOY_ROLE}}
+        aws-region: eu-west-2
+        role-session-name: OIDCSession
+
+    - name: Setup Terraform with specified version on the runner
        uses: hashicorp/setup-terraform@v2
        with:
          terraform_version: 1.3.7    
+         terraform_wrapper: false
     
-     - name: Configure AWS Credentials
-       uses: aws-actions/configure-aws-credentials@v1
-       with:
-        role-to-assume: ${{secrets.DEV_DEPLOY_ROLE}}
-        aws-region: eu-west-2
-        role-session-name: OIDCSession
+    - name: Terraform init
+       id: init
+       run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
