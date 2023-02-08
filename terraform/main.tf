@@ -6,7 +6,7 @@ terraform {
     dynamodb_table = "tf-state-dynamodb-lock"
     encrypt        = true
   }
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
