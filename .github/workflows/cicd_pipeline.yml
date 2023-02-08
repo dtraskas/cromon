@@ -51,7 +51,7 @@ jobs:
       run: terraform fmt -check -diff -recursive
     
     - name: Terraform validate
-      run: terraform validate
+      run: terraform validate -no-color
 
     - name: Terraform plan       
       if: github.event_name == 'pull_request'
@@ -59,33 +59,29 @@ jobs:
       continue-on-error: true
   
     - name: Update Pull Request
-      uses: actions/github-script@v6
+      uses: actions/github-script@v4.0.2
       if: github.event_name == 'pull_request'
-      env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          const output = `${ "${{ steps.terraform_fmt.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Format and Style 🖌
+          ${ "${{ steps.terraform_init.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Initialization ⚙️
+          ${ "${{ steps.terraform_plan.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Plan 📖
+          ${ "${{ steps.terraform_validate.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Validation 🤖
 
-          <details><summary>Show Plan</summary>
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-          \`\`\`\n
-          ${process.env.PLAN}
-          \`\`\`
-
-          </details>
-          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-          github.rest.issues.createComment({
+          github.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
-          })    
+          })
 
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
