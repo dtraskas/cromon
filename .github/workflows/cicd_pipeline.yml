@@ -37,5 +37,5 @@ jobs:
         role-to-assume: arn:aws:iam::430153336777:role/dt-primary-dev-role-devops
         aws-region: eu-west-2        
 
-      - run: aws sts get-caller-identity
-      - run: echo "Hello,World"
+    - run: aws sts get-caller-identity
+    - run: echo "Hello,World"
