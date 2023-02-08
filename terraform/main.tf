@@ -1,6 +1,5 @@
 terraform {
   backend "s3" {
-    bucket         = "${var.account_name}-terraform-remote-state"
     key            = "cromon/terraform.tfstate"
     region         = eu-west-2
     dynamodb_table = "tf-state-dynamodb-lock"
