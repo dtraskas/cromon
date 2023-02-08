@@ -36,3 +36,4 @@ jobs:
       with:
         role-to-assume: arn:aws:iam::430153336777:role/dt-primary-dev-role-devops
         aws-region: eu-west-2
+        audience: https://github.com/dtraskas
