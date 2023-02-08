@@ -31,9 +31,9 @@ jobs:
        with:
          terraform_version: 1.3.7    
     
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
+     - name: Configure AWS Credentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
         role-to-assume: arn:aws:iam::430153336777:role/dt-primary-dev-role-devops
         aws-region: eu-west-2
         audience: https://github.com/dtraskas
