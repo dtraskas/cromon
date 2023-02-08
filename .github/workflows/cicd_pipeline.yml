@@ -13,8 +13,8 @@ on:
   #  - terraform/**
 
 permissions:
-    id-token: write
-    contents: read
+  id-token: write
+  contents: read
 
 jobs:
  deploy-to-staging:
@@ -34,7 +34,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{ secrets.DEPLOY_ROLE }}"
+        role-to-assume: ${{ secrets.DEPLOY_ROLE }}
         aws-region: eu-west-2
         role-session-name: OIDCSession
 
