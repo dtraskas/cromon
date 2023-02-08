@@ -20,6 +20,7 @@ jobs:
  deploy-to-staging:
    name: "Terraform Staging Deployment"
    runs-on: ubuntu-latest
+   environment: staging
    defaults:
      run:
        shell: bash
@@ -33,12 +34,10 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::430153336777:role/dt-primary-role-dev
+        role-to-assume: ${{ secrets.DEPLOY_ROLE }}"
         aws-region: eu-west-2
         role-session-name: OIDCSession
 
-    - run: aws sts get-caller-identity
-    
     - name: Setup Terraform with specified version on the runner
       uses: hashicorp/setup-terraform@v2
       with:
