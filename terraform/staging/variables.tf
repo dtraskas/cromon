@@ -21,11 +21,15 @@ variable "account_id" {
 variable "aws_role" {
   description = "The AWS role to run terraform commands"
   type        = string
-  default     = "cicd"
+  default     = "dev"
 }
 
 variable "region" {
   description = "The AWS region we are deploying resources into"
   type        = string
   default     = "eu-west-2"
+}
+
+variable "environment" {
+  description = "This is the environment where the application is deployed"
 }
