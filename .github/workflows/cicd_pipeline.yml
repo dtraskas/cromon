@@ -16,6 +16,10 @@ jobs:
  terraform:
    name: "Terraform Infrastructure Change Management"
    runs-on: ubuntu-latest
+   permissions:
+      id-token: write
+      contents: read
+      
    defaults:
      run:
        shell: bash
