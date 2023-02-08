@@ -12,7 +12,7 @@ terraform {
     region         = "eu-west-2"
     dynamodb_table = "tf-state-dynamodb-lock"
     encrypt        = true
-  }  
+  }
 }
 
 provider "aws" {
@@ -24,5 +24,6 @@ provider "aws" {
 
 resource "aws_s3_bucket" "stg" {
   bucket = "${var.environment}-test"
+
   force_destroy = true
 }
