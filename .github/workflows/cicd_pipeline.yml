@@ -34,7 +34,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: ${{secrets.DEPLOY_ROLE}}
+        role-to-assume: arn:aws:iam::430153336777:role/dt-primary-role-dev
         aws-region: eu-west-2
         role-session-name: OIDCSession
 
