@@ -84,7 +84,7 @@ jobs:
           <details><summary>Show Plan</summary>
 
           \`\`\`\n
-          ${env.PLAN}
+          ${{env.PLAN}}
           \`\`\`
 
           </details>
