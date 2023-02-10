@@ -45,15 +45,19 @@ jobs:
         terraform_wrapper: false
     
     - name: Terraform init
+      id: init
       run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
     
     - name: Terraform format
+      id: fmt
       run: terraform fmt -check -diff -recursive
     
     - name: Terraform validate
+      id: validate
       run: terraform validate -no-color
 
     - name: Terraform plan       
+      id: plan
       if: github.event_name == 'pull_request'
       run: terraform plan -var="account_name=${{ secrets.AWS_ACCOUNT }}" -var="account_name=${{ secrets.AWS_ACCOUNT_ID }}" -no-color -input=false
       continue-on-error: true
@@ -64,10 +68,10 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `${ "${{ steps.terraform_fmt.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Format and Style 🖌
-          ${ "${{ steps.terraform_init.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Initialization ⚙️
-          ${ "${{ steps.terraform_plan.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Plan 📖
-          ${ "${{ steps.terraform_validate.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Validation 🤖
+          const output = `${ "${{ steps.fmt.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Format and Style 🖌
+          ${ "${{ steps.init.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Initialization ⚙️
+          ${ "${{ steps.plan.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Plan 📖
+          ${ "${{ steps.validate.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Validation 🤖
 
           *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
