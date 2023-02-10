@@ -17,7 +17,7 @@ permissions:
   contents: read
   issues: write
   pull-requests: write
-  
+
 jobs:
  deploy-to-staging:
    name: "Terraform Staging Deployment"
@@ -68,7 +68,7 @@ jobs:
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        PLAN: "terraform\n${{ steps.plan.outputs.* }}"
       with:
         script: |
           const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
