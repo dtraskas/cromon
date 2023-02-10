@@ -65,17 +65,25 @@ jobs:
     - name: Update Pull Request
       uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `${ "${{ steps.fmt.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Format and Style 🖌
-          ${ "${{ steps.init.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Initialization ⚙️
-          ${ "${{ steps.plan.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Plan 📖
-          ${ "${{ steps.validate.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Validation 🤖
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+          <details><summary>Show Plan</summary>
 
-          github.issues.createComment({
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
