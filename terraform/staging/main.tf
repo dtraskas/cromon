@@ -17,13 +17,9 @@ terraform {
 
 provider "aws" {
   region = var.region
-  assume_role {
-    role_arn = "arn:aws:iam::${var.account_id}:role/${var.account_name}-role-${var.aws_role}"
-  }
 }
 
 resource "aws_s3_bucket" "stg" {
-  bucket = "${var.environment}-test"
-
+  bucket        = "${var.environment}-test"
   force_destroy = true
 }

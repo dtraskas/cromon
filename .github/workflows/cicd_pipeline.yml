@@ -15,6 +15,8 @@ on:
 permissions:
   id-token: write
   contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
  deploy-to-staging:
@@ -29,7 +31,7 @@ jobs:
  
    steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
  
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -45,33 +47,50 @@ jobs:
         terraform_wrapper: false
     
     - name: Terraform init
+      id: init
       run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
     
     - name: Terraform format
+      id: fmt
       run: terraform fmt -check -diff -recursive
     
     - name: Terraform validate
+      id: validate
       run: terraform validate -no-color
 
     - name: Terraform plan       
+      id: plan
       if: github.event_name == 'pull_request'
-      run: terraform plan -var="account_name=${{ secrets.AWS_ACCOUNT }}" -var="account_name=${{ secrets.AWS_ACCOUNT_ID }}" -no-color -input=false
+      run: |
+        terraform=$(terraform plan -var="account_name=${{ secrets.AWS_ACCOUNT }}" -var="account_id=${{ secrets.AWS_ACCOUNT_ID }}" -var-file terraform.tvars -no-color -input=false)
+        echo 'PLAN<<EOF' >> $GITHUB_ENV
+        echo "$terraform" >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
       continue-on-error: true
-  
+
+    - name: Temp test
+      run: echo $GITHUB_ENV
+
     - name: Update Pull Request
-      uses: actions/github-script@v4.0.2
+      uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `${ "${{ steps.terraform_fmt.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Format and Style 🖌
-          ${ "${{ steps.terraform_init.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Initialization ⚙️
-          ${ "${{ steps.terraform_plan.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Plan 📖
-          ${ "${{ steps.terraform_validate.outcome }}" == "success" ? "\u2714" : "\u274c" } Terraform Validation 🤖
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+          <details><summary>Show Plan</summary>
 
-          github.issues.createComment({
+          \`\`\`\n
+          ${{env.PLAN}}
+          \`\`\`
+
+          </details>
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
