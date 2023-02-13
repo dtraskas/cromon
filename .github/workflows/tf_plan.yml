@@ -55,8 +55,7 @@ jobs:
     env:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      # AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_REGION: eu-west-2
+      AWS_REGION: ${{ secrets.AWS_REGION }}
       BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
       DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
 
@@ -68,7 +67,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: $DEPLOY_ROLE
-          aws-region: $AWS_REGION
+          aws-region: eu-west-2
           role-session-name: OIDCSession
 
       - name: Setup Terraform
