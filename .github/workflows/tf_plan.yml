@@ -62,14 +62,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Temp echo
+      - name: Temp echo1
         run: echo $AWS_REGION | sed 's/./& /g'
+
+      - name: Temp echo2
+        run: echo $DEPLOY_ROLE | sed 's/./& /g'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: $DEPLOY_ROLE
-          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: OIDCSession           
 
       - name: Setup Terraform
