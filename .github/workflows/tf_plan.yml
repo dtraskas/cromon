@@ -1,0 +1,92 @@
+### Reusable workflow to plan terraform deployment, create artifact and upload to workflow artifacts for consumption ###
+### Based on: https://github.com/Pwd9000-ML/Azure-Terraform-Deployments
+
+name: "Build TF Plan"
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: 'Specifies the path of the root terraform module.'
+        required: true
+        type: string
+      tf_version:
+        description: 'Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
+        required: false
+        type: string
+        default: latest
+      gh_environment:
+        description: 'Specifies the GitHub deployment environment.'
+        required: false
+        type: string
+        default: null
+      tf_key:
+        description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
+        required: true
+        type: string
+      tf_vars_file:
+        description: 'Specifies the Terraform TFVARS file.'
+        required: true
+        type: string    
+
+jobs:
+  build-plan:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.gh_environment }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.path }}
+    env:
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: $DEPLOY_ROLE
+          aws-region: $AWS_REGION
+          role-session-name: OIDCSession
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ inputs.tf_version }}
+          terraform_wrapper: false
+      
+      - name: Terraform init
+        id: init
+        run: terraform init -backend-config="bucket=$BUCKET_TF_STATE"
+      
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt -check -diff -recursive
+      
+      - name: Terraform validate
+        id: validate
+        run: terraform validate -no-color
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var="account_name=$AWS_ACCOUNT" -var="account_id=$AWS_ACCOUNT_ID" -var-file ${{ inputs.tf_vars_file }} --out=plan.tfplan
+        continue-on-error: true
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Compress TF Plan artifact
+        run: zip -r ${{ inputs.tf_key }}.zip ./*
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "${{ inputs.tf_key }}"
+          path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
+          retention-days: 5

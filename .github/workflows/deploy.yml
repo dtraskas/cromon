@@ -1,0 +1,58 @@
+### Workflow to deploy in development environment
+
+name: "Terraform CI/CD"
+on:
+  push:
+    branches:
+      - main # the "trunk" branch
+  # enables manual triggers
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  build-dev-plan:    
+    uses: dtraskas/cromon/.github/workflows/tf_plan.yml@master
+    name: Build the Terraform plan
+    with:
+      path: terraform                  ## Path to terraform root module (Required)
+      tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
+      tf_vars_file: ./dev/terraform.tfvars    ## Terraform TFVARS (Required)
+      gh_environment: Development
+      
+  deploy-to-dev:
+    needs: build-dev-plan
+    uses: dtraskas/cromon/.github/workflows/tf_apply.yml@master
+    name: Deploy to dev infrastructure
+    with:
+      path: terraform                  ## Path to terraform root module (Required)
+      tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
+      tf_vars_file: terraform.tfvars    ## Terraform TFVARS (Required)
+      gh_environment: Development
+
+  build-prod-plan:    
+    needs: deploy-to-dev
+    uses: dtraskas/cromon/.github/workflows/tf_plan.yml@master
+    name: Build the Terraform plan
+    with:
+      path: terraform                  ## Path to terraform root module (Required)
+      tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_key: cromon-prod             ## Specifies name that will be given to terraform state file and plan artifact (Required)
+      tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
+      gh_environment: Production
+
+  deploy-to-prod:
+    needs: build-prod-plan
+    uses: dtraskas/cromon/.github/workflows/tf_apply.yml@master
+    name: Deploy to prod infrastructure
+    with:
+      path: terraform                  ## Path to terraform root module (Required)
+      tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_key: cromon-prod          ## Specifies name that will be given to terraform state file and plan artifact (Required)
+      tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
+      gh_environment: Production

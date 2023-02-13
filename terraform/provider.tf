@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "eu-west-2"
+}
+
 terraform {
   required_providers {
     aws = {
@@ -13,13 +17,4 @@ terraform {
     dynamodb_table = "tf-state-dynamodb-lock"
     encrypt        = true
   }
-}
-
-provider "aws" {
-  region = var.region
-}
-
-resource "aws_s3_bucket" "stg" {
-  bucket        = "${var.environment}-test"
-  force_destroy = true
 }

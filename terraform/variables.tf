@@ -30,6 +30,6 @@ variable "region" {
   default     = "eu-west-2"
 }
 
-variable "environment" {
+variable "env" {
   description = "This is the environment where the application is deployed"
 }
