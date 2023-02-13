@@ -22,7 +22,7 @@ jobs:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
-      tf_vars_file: ./dev/terraform.tfvars    ## Terraform TFVARS (Required)
+      tf_vars_file: dev/terraform.tfvars    ## Terraform TFVARS (Required)
       environment: Development
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
@@ -39,7 +39,7 @@ jobs:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
-      tf_vars_file: terraform.tfvars    ## Terraform TFVARS (Required)
+      tf_vars_file: dev/terraform.tfvars    ## Terraform TFVARS (Required)
       environment: Development
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
@@ -56,7 +56,7 @@ jobs:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod             ## Specifies name that will be given to terraform state file and plan artifact (Required)
-      tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
+      tf_vars_file: prod/terraform.tfvars    ## Terraform TFVARS (Required)
       environment: Production
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
@@ -73,7 +73,7 @@ jobs:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod          ## Specifies name that will be given to terraform state file and plan artifact (Required)
-      tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
+      tf_vars_file: prod/terraform.tfvars    ## Terraform TFVARS (Required)
       environment: Production
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
