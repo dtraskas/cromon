@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build-dev-plan:    
-    uses: ./.github/workflows/tf_plan.yml@master
+    uses: ./.github/workflows/tf_plan.yml
     name: Build the Terraform plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
@@ -27,7 +27,7 @@ jobs:
       
   deploy-to-dev:
     needs: build-dev-plan
-    uses: ./.github/workflows/tf_apply.yml@master
+    uses: ./.github/workflows/tf_apply.yml
     name: Deploy to dev infrastructure
     with:
       path: terraform                  ## Path to terraform root module (Required)
@@ -38,7 +38,7 @@ jobs:
 
   build-prod-plan:    
     needs: deploy-to-dev
-    uses: ./.github/workflows/tf_plan.yml@master
+    uses: ./.github/workflows/tf_plan.yml
     name: Build the Terraform plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
@@ -49,7 +49,7 @@ jobs:
 
   deploy-to-prod:
     needs: build-prod-plan
-    uses: ./.github/workflows/tf_apply.yml@master
+    uses: ./.github/workflows/tf_apply.yml
     name: Deploy to prod infrastructure
     with:
       path: terraform                  ## Path to terraform root module (Required)
