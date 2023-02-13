@@ -24,6 +24,12 @@ jobs:
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: ./dev/terraform.tfvars    ## Terraform TFVARS (Required)
       gh_environment: Development
+    secrets:
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
       
   deploy-to-dev:
     needs: build-dev-plan
@@ -35,6 +41,12 @@ jobs:
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: terraform.tfvars    ## Terraform TFVARS (Required)
       gh_environment: Development
+    secrets:
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
 
   build-prod-plan:    
     needs: deploy-to-dev
@@ -46,6 +58,12 @@ jobs:
       tf_key: cromon-prod             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
       gh_environment: Production
+    secrets:
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
 
   deploy-to-prod:
     needs: build-prod-plan
@@ -57,3 +75,9 @@ jobs:
       tf_key: cromon-prod          ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
       gh_environment: Production
+    secrets:
+      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
