@@ -14,11 +14,10 @@ on:
         required: false
         type: string
         default: latest
-      gh_environment:
+      environment:
         description: 'Specifies the GitHub deployment environment.'
         required: false
         type: string
-        default: null
       tf_key:
         description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
         required: true

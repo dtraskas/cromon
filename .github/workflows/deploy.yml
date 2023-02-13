@@ -23,7 +23,7 @@ jobs:
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: ./dev/terraform.tfvars    ## Terraform TFVARS (Required)
-      gh_environment: Development
+      environment: Development
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
@@ -40,7 +40,7 @@ jobs:
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: terraform.tfvars    ## Terraform TFVARS (Required)
-      gh_environment: Development
+      environment: Development
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
@@ -57,7 +57,7 @@ jobs:
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
-      gh_environment: Production
+      environment: Production
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
@@ -74,7 +74,7 @@ jobs:
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod          ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: ./prod/terraform.tfvars    ## Terraform TFVARS (Required)
-      gh_environment: Production
+      environment: Production
     secrets:
       AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
