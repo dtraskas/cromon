@@ -69,8 +69,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: $DEPLOY_ROLE
-          aws-region: $AWS_REGION
-          role-session-name: OIDCSession
+          aws-region: eu-west-2
+          role-session-name: OIDCSession           
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
