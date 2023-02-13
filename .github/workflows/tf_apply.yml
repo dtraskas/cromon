@@ -27,6 +27,22 @@ on:
         description: 'Specifies the Terraform TFVARS file.'
         required: true
         type: string    
+    secrets:
+      AWS_ACCOUNT:
+        description: 'Specifies the AWS account name.'
+        required: true
+      AWS_ACCOUNT_ID:
+        description: 'Specifies the AWS account ID.'
+        required: true
+      AWS_REGION:
+        description: 'Specifies the AWS region.'
+        required: true
+      BUCKET_TF_STATE:
+        description: 'Specifies the Terraform remote state S3 bucket.'
+        required: true
+      DEPLOY_ROLE:
+        description: 'Specifies the AWS deployment role.'
+        required: true
 
 jobs:
   apply-plan:
