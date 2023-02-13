@@ -14,11 +14,10 @@ on:
         required: false
         type: string
         default: latest
-      gh_environment:
+      environment:
         description: 'Specifies the GitHub deployment environment.'
-        required: false
-        type: string
-        default: null
+        required: true
+        type: string        
       tf_key:
         description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
         required: true
@@ -67,7 +66,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: $DEPLOY_ROLE
-          aws-region: eu-west-2
+          aws-region: $AWS_REGION
           role-session-name: OIDCSession
 
       - name: Setup Terraform
