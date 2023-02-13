@@ -1,10 +1,11 @@
 ### Workflow to deploy in development environment
 
 name: "Terraform CI/CD"
+
 on:
   push:
     branches:
-      - main # the "trunk" branch
+      - main # your "trunk" branch
   # enables manual triggers
   workflow_dispatch:
 
@@ -15,7 +16,7 @@ permissions:
 
 jobs:
   build-dev-plan:    
-    uses: dtraskas/cromon/.github/workflows/tf_plan.yml@master
+    uses: ./.github/workflows/tf_plan.yml@master
     name: Build the Terraform plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
@@ -26,7 +27,7 @@ jobs:
       
   deploy-to-dev:
     needs: build-dev-plan
-    uses: dtraskas/cromon/.github/workflows/tf_apply.yml@master
+    uses: ./.github/workflows/tf_apply.yml@master
     name: Deploy to dev infrastructure
     with:
       path: terraform                  ## Path to terraform root module (Required)
@@ -37,7 +38,7 @@ jobs:
 
   build-prod-plan:    
     needs: deploy-to-dev
-    uses: dtraskas/cromon/.github/workflows/tf_plan.yml@master
+    uses: ./.github/workflows/tf_plan.yml@master
     name: Build the Terraform plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
@@ -48,7 +49,7 @@ jobs:
 
   deploy-to-prod:
     needs: build-prod-plan
-    uses: dtraskas/cromon/.github/workflows/tf_apply.yml@master
+    uses: ./.github/workflows/tf_apply.yml@master
     name: Deploy to prod infrastructure
     with:
       path: terraform                  ## Path to terraform root module (Required)
