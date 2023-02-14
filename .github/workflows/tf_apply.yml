@@ -27,19 +27,16 @@ on:
         required: true
         type: string    
     secrets:
-      AWS_ACCOUNT:
+      aws_account:
         description: 'Specifies the AWS account name.'
         required: true
-      AWS_ACCOUNT_ID:
+      aws_account_id:
         description: 'Specifies the AWS account ID.'
         required: true
-      AWS_REGION:
+      aws_region:
         description: 'Specifies the AWS region.'
         required: true
-      BUCKET_TF_STATE:
-        description: 'Specifies the Terraform remote state S3 bucket.'
-        required: true
-      DEPLOY_ROLE:
+      deploy_role:
         description: 'Specifies the AWS deployment role.'
         required: true
 
@@ -71,13 +68,17 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.deploy_role }}
+          aws-region: ${{ secrets.aws_region }}
           role-session-name: OIDCSession           
 
       - name: Terraform init
         id: init
-        run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
+        run: | 
+          terraform init \
+          -backend-config="account_name=${{ secrets.aws_account }}" \
+          -backend-config="region=${{ secrets.aws_region }}" \
+          -backend-config="env=${{ inputs.environment }}"
 
       - name: Terraform Apply
         run: terraform apply plan.tfplan

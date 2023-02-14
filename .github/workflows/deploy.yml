@@ -17,67 +17,63 @@ permissions:
 jobs:
   build-dev-plan:    
     uses: ./.github/workflows/tf_plan.yml
-    name: Build TF plan
+    name: (DEV) Build TF plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: dev/terraform.tfvars    ## Terraform TFVARS (Required)
-      environment: Development
+      environment: dev
     secrets:
-      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
-      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      aws_account: ${{ secrets.AWS_ACCOUNT }}
+      aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      deploy_role: ${{ secrets.DEPLOY_ROLE }}
       
   deploy-to-dev:
     needs: build-dev-plan
     uses: ./.github/workflows/tf_apply.yml
-    name: Deploy to Dev
+    name: DEV Deploy
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: dev/terraform.tfvars    ## Terraform TFVARS (Required)
-      environment: Development
+      environment: dev
     secrets:
-      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
-      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      aws_account: ${{ secrets.AWS_ACCOUNT }}
+      aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      deploy_role: ${{ secrets.DEPLOY_ROLE }}
 
   build-prod-plan:    
     needs: deploy-to-dev
     uses: ./.github/workflows/tf_plan.yml
-    name: Build TF plan
+    name: (PROD) Build TF plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: prod/terraform.tfvars    ## Terraform TFVARS (Required)
-      environment: Production
+      environment: prod
     secrets:
-      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
-      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      aws_account: ${{ secrets.AWS_ACCOUNT }}
+      aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      deploy_role: ${{ secrets.DEPLOY_ROLE }}
 
   deploy-to-prod:
     needs: build-prod-plan
     uses: ./.github/workflows/tf_apply.yml
-    name: Deploy to Prod
+    name: PROD Deploy
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod          ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: prod/terraform.tfvars    ## Terraform TFVARS (Required)
-      environment: Production
+      environment: prod
     secrets:
-      AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
-      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
-      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      aws_account: ${{ secrets.AWS_ACCOUNT }}
+      aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      deploy_role: ${{ secrets.DEPLOY_ROLE }}
