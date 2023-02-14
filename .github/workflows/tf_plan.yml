@@ -86,9 +86,9 @@ jobs:
         id: plan
         run: | 
           terraform plan \
-          -var="account_name=${{ secrets.aws_account }}" 
-          -var="account_id=${{ secrets.aws_account_id }}" 
-          -var-file ${{ inputs.tf_vars_file }} 
+          -var="account_name=${{ secrets.aws_account }}"  \
+          -var="account_id=${{ secrets.aws_account_id }}" \
+          -var-file ${{ inputs.tf_vars_file }} \
           -out=plan.tfplan
         continue-on-error: true
 
