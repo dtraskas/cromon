@@ -70,9 +70,9 @@ jobs:
         id: init
         run: | 
           terraform init \
-          -backend-config="account_name=${{ secrets.aws_account }}" \
-          -backend-config="region=${{ secrets.aws_region }}" \
-          -backend-config="env=${{ inputs.environment }}"
+          -backend-config="bucket=${{ secrets.aws_account }}-terraform-remote-state" \
+          -backend-config="key=cromon/${{ inputs.environment }}/terraform.tfstate" \
+          -backend-config="dynamodb_table="${{ secrets.aws_account }}-tf-state-dynamodb-lock"
       
       - name: Terraform format
         id: fmt
