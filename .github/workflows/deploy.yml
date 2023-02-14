@@ -15,9 +15,8 @@ permissions:
   issues: write
 
 jobs:
-  build-dev-plan:    
-    uses: ./.github/workflows/tf_plan.yml
-    name: (DEV) Build TF plan
+  plan-dev:
+    uses: ./.github/workflows/tf_plan.yml    
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
@@ -30,10 +29,9 @@ jobs:
       aws_region: ${{ secrets.AWS_REGION }}
       deploy_role: ${{ secrets.DEPLOY_ROLE }}
       
-  deploy-to-dev:
-    needs: build-dev-plan
+  deploy-dev:
+    needs: plan-dev
     uses: ./.github/workflows/tf_apply.yml
-    name: DEV Deploy
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
@@ -46,10 +44,8 @@ jobs:
       aws_region: ${{ secrets.AWS_REGION }}
       deploy_role: ${{ secrets.DEPLOY_ROLE }}
 
-  build-prod-plan:    
-    needs: deploy-to-dev
+  plan-prod:
     uses: ./.github/workflows/tf_plan.yml
-    name: (PROD) Build TF plan
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
@@ -62,10 +58,9 @@ jobs:
       aws_region: ${{ secrets.AWS_REGION }}
       deploy_role: ${{ secrets.DEPLOY_ROLE }}
 
-  deploy-to-prod:
-    needs: build-prod-plan
+  deploy-prod:
+    needs: [plan-prod, deploy-dev]
     uses: ./.github/workflows/tf_apply.yml
-    name: PROD Deploy
     with:
       path: terraform                  ## Path to terraform root module (Required)
       tf_version: latest                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
