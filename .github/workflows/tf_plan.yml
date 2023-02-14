@@ -104,4 +104,4 @@ jobs:
         with:
           name: "${{ inputs.tf_key }}"
           path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
-          retention-days: 5
+          retention-days: 1
