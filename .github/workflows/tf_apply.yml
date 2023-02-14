@@ -78,7 +78,7 @@ jobs:
           terraform init \
           -backend-config="bucket=${{ secrets.aws_account }}-terraform-remote-state" \
           -backend-config="key=cromon/${{ inputs.environment }}/terraform.tfstate" \
-          -backend-config="dynamodb_table="${{ secrets.aws_account }}-tf-state-dynamodb-lock"
+          -backend-config="dynamodb_table=${{ secrets.aws_account }}-tf-state-dynamodb-lock"
 
       - name: Terraform Apply
         run: terraform apply plan.tfplan
