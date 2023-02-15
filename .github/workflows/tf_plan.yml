@@ -97,7 +97,7 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           directory: .
-          skip_check: CKV_AWS_21,CKV_AWS_144"
+          skip_check: CKV_AWS_21,CKV_AWS_144
           framework: terraform_plan
           quiet: false
           output_format: cli # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
