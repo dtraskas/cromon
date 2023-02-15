@@ -98,7 +98,7 @@ jobs:
         with:
           directory: terraform
           skip_check: CKV_AWS_21,CKV_AWS_144
-          framework: terraform_plan
+          framework: terraform
           quiet: false
           output_format: cli          
 
