@@ -96,7 +96,7 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
-          directory: terraform
+          directory: .
           skip_check: CKV_AWS_21,CKV_AWS_144
           framework: terraform
           quiet: false
