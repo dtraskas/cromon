@@ -100,8 +100,7 @@ jobs:
           skip_check: CKV_AWS_21,CKV_AWS_144
           framework: terraform_plan
           quiet: false
-          output_format: cli
-          baseline: .checkov.baseline           
+          output_format: cli          
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
