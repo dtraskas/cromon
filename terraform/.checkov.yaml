@@ -1,0 +1,10 @@
+skip-check:
+  - CKV_AWS_21
+  - CKV_AWS_144
+  # - CKV_AWS_145
+framework: terraform_plan
+output: cli
+quiet: false
+directory: .
+repo-root-for-plan-enrichment: .
+baseline: .checkov.baseline
