@@ -7,9 +7,14 @@
 *   log groups and KMS keys all created as part of this module.
 */
 
-# module "log_group" {
-#   source = "../log_group"
-# }
+module "log_group" {
+  source = "../log_group"
+
+  name         = "/aws/lambda/${local.lambda_name}"
+  account_name = var.account_name
+  application  = var.application
+  environment  = var.environment
+}
 
 # Compute the source code hash, only taking into
 # consideration the actual application code files
@@ -64,7 +69,7 @@ data "archive_file" "lambda_source_package" {
 # Deploy the Lambda function to AWS
 resource "aws_lambda_function" "lambda_function" {
 
-  function_name = var.name_suffix
+  function_name = local.lambda_name
   description   = var.description
 
   role        = var.role
@@ -81,4 +86,12 @@ resource "aws_lambda_function" "lambda_function" {
     # environment variables after the first deploy.
     ignore_changes = [environment]
   }
+
+  tags = merge(
+    local.default_tags,
+    {
+      application = var.application
+      environment = var.environment
+    }
+  )
 }

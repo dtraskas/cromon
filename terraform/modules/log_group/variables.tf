@@ -4,6 +4,11 @@ variable "default_tags" {
   default     = {}
 }
 
+variable "name" {
+  description = "The name of the log group."
+  type        = string
+}
+
 variable "application" {
   description = "The name of the app."
   type        = string
@@ -14,23 +19,19 @@ variable "account_name" {
   type        = string
 }
 
-variable "account_id" {
-  description = "The AWS account ID."
-  type        = string
-
-  validation {
-    condition     = length(var.account_id) == 12
-    error_message = "The account_id must be 12 characters long."
-  }
-
-  validation {
-    condition     = can(tonumber(var.account_id))
-    error_message = "The account_id must be a number."
-  }
-}
-
 variable "description" {
   description = "What is logged by the log group."
   type        = string
   default     = "Just a log group."
+}
+
+variable "environment" {
+  description = "The environment the infrastructure is deployed to."
+  type        = string
+}
+
+variable "log_retention" {
+  description = "The log group retention in days"
+  type        = number
+  default     = 7
 }

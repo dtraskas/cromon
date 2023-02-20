@@ -15,6 +15,11 @@ variable "description" {
   default     = "Just a lambda."
 }
 
+variable "environment" {
+  description = "The environment the infrastructure is deployed to."
+  type        = string
+}
+
 variable "policy" {
   description = "The inline policy for the role"
   type        = string

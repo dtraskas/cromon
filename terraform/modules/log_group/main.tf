@@ -7,11 +7,14 @@
 */
 
 resource "aws_cloudwatch_log_group" "logz" {
+  name              = var.name
+  retention_in_days = var.log_retention
 
   tags = merge(
     local.default_tags,
     {
       application = var.application
+      environment = var.environment
     }
   )
 }

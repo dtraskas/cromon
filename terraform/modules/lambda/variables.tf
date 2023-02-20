@@ -20,6 +20,11 @@ variable "description" {
   default     = "Just a lambda."
 }
 
+variable "environment" {
+  description = "The environment the infrastructure is deployed to."
+  type        = string
+}
+
 variable "source_path" {
   description = "The path to the directory to zip up."
   type        = string
