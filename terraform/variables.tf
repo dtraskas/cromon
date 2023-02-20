@@ -32,4 +32,11 @@ variable "region" {
 
 variable "env" {
   description = "This is the environment where the application is deployed"
+  type        = string
+}
+
+variable "application" {
+  description = "The name of the application"
+  type        = string
+  default     = "cromon"
 }
