@@ -111,11 +111,11 @@ jobs:
       - name: Compress TF Plan artifact
         run: |
           cd ..
-          zip -r ${{ inputs.tf_key }}.zip src/* terraform/*
+          zip -r ${{ inputs.tf_key }}.zip src/* terraform/* && mv ${{ inputs.tf_key }}.zip terraform
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: "${{ inputs.tf_key }}"
-          path: ".././${{ inputs.tf_key }}.zip"
+          path: "terraform/${{ inputs.tf_key }}.zip"
           retention-days: 1
