@@ -7,7 +7,8 @@ on:
     inputs:
       path:
         description: 'Specifies the path of the root terraform module.'
-        required: true
+        # required: true
+        required: false
         type: string
       tf_version:
         description: 'Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
