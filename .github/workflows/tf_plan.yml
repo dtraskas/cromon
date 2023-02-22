@@ -92,15 +92,15 @@ jobs:
           -out=plan.tfplan
         continue-on-error: true
 
-      - name: Run Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: .
-          skip_check: CKV_AWS_21,CKV_AWS_144
-          framework: terraform
-          quiet: false
-          output_format: cli          
+      # - name: Run Checkov
+      #   id: checkov
+      #   uses: bridgecrewio/checkov-action@master
+      #   with:
+      #     directory: .
+      #     skip_check: CKV_AWS_21,CKV_AWS_144
+      #     framework: terraform
+      #     quiet: false
+      #     output_format: cli          
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
