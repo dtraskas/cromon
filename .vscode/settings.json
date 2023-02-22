@@ -1,5 +1,8 @@
 {
     "yaml.schemas": {
         "https://json.schemastore.org/github-workflow.json": "file:///Users/dtraskas/Projects/cromon/.github/workflows/deploy.yml"
-    }
+    },
+    // "editor.hover.enabled": false,
+    // "editor.parameterHints.enabled": false,
+    // "editor.suggest.snippetsPreventQuickSuggestions": false    
 }
