@@ -50,6 +50,9 @@ jobs:
         working-directory: ${{ inputs.path }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
