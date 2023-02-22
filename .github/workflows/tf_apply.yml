@@ -47,17 +47,17 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ${{ inputs.path }}
+        # working-directory: ${{ inputs.path }}
 
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ inputs.tf_key }}
-          path: ${{ inputs.path }}
+          # path: ${{ inputs.path }}
 
       - name: Decompress TF Plan artifact
-        run: unzip ${{ inputs.tf_key }}.zip
+        run: unzip ${{ inputs.tf_key }}.zip; cd terraform
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
