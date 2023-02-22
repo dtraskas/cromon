@@ -49,6 +49,7 @@ jobs:
       run:
         shell: bash
         # working-directory: ${{ inputs.path }}
+        working-directory: .
 
     steps:
       - name: Download Artifact
@@ -58,7 +59,7 @@ jobs:
           # path: ${{ inputs.path }}
 
       - name: Decompress TF Plan artifact
-        run: unzip ${{ inputs.tf_key }}.zip; cd terraform
+        run: unzip ${{ inputs.tf_key }}.zip
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -76,10 +77,13 @@ jobs:
       - name: Terraform init
         id: init
         run: | 
+          cd terraform
           terraform init \
           -backend-config="bucket=${{ secrets.aws_account }}-terraform-remote-state" \
           -backend-config="key=cromon/${{ inputs.environment }}/terraform.tfstate" \
           -backend-config="dynamodb_table=${{ secrets.aws_account }}-tf-state-dynamodb-lock"
 
       - name: Terraform Apply
-        run: terraform apply plan.tfplan
+        run: |
+          cd terraform
+          terraform apply plan.tfplan

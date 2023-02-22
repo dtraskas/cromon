@@ -48,6 +48,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: terraform
         # working-directory: ${{ inputs.path }}    
 
     steps:
@@ -70,7 +71,6 @@ jobs:
       - name: Terraform init
         id: init
         run: | 
-          cd terraform
           terraform init \
           -backend-config="bucket=${{ secrets.aws_account }}-terraform-remote-state" \
           -backend-config="key=cromon/${{ inputs.environment }}/terraform.tfstate" \
@@ -117,6 +117,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: "${{ inputs.tf_key }}"
-          # path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
-          path: "${{ inputs.tf_key }}.zip"
+          path: ".././${{ inputs.tf_key }}.zip"
           retention-days: 1
