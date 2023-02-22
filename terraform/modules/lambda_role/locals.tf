@@ -1,4 +1,4 @@
 locals {
   default_tags = jsondecode(file("${path.module}/../tags/defaults.json"))
-  role_name    = "${var.account_name}-${var.application}-${var.name_suffix}"
+  role_name    = "${var.application}-${var.environment}-${var.name_suffix}"
 }
