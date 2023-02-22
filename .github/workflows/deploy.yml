@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/tf_plan.yml    
     with:
       path: terraform                  ## Path to terraform root module (Required)
-      tf_version: "4.0.0"                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_version: 4.30.0                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: environments/dev.tfvars    ## Terraform TFVARS (Required)
       environment: dev
@@ -34,7 +34,7 @@ jobs:
     uses: ./.github/workflows/tf_apply.yml
     with:
       path: terraform                  ## Path to terraform root module (Required)
-      tf_version: "4.0.0"                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_version: 4.30.0                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-dev             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: environments/dev.tfvars    ## Terraform TFVARS (Required)
       environment: dev
@@ -48,7 +48,7 @@ jobs:
     uses: ./.github/workflows/tf_plan.yml
     with:
       path: terraform                  ## Path to terraform root module (Required)
-      tf_version: "4.0.0"                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_version: 4.30.0                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod             ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: environments/prod.tfvars    ## Terraform TFVARS (Required)
       environment: prod
@@ -63,7 +63,7 @@ jobs:
     uses: ./.github/workflows/tf_apply.yml
     with:
       path: terraform                  ## Path to terraform root module (Required)
-      tf_version: "4.0.0"                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
+      tf_version: 4.30.0                 ## Terraform version e.g: 1.1.0 Default=latest (Optional)
       tf_key: cromon-prod          ## Specifies name that will be given to terraform state file and plan artifact (Required)
       tf_vars_file: environments/prod.tfvars    ## Terraform TFVARS (Required)
       environment: prod
