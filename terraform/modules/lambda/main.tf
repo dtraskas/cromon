@@ -58,8 +58,8 @@ resource "null_resource" "install_dependencies" {
 # Create an archive form the Lambda source code,
 # filtering out unneeded files.
 data "archive_file" "lambda_source_package" {
-  depends_on = [null_resource.install_dependencies]
-  type       = "zip"
+  depends_on  = [null_resource.install_dependencies]
+  type        = "zip"
   source_dir  = "${path.module}/.pkg"
   output_path = "${path.module}/.tmp/${random_uuid.lambda_src_hash.result}.zip"
 
@@ -100,7 +100,7 @@ resource "aws_lambda_function" "lambda_function" {
 }
 
 # Cleanup after installing
-resource "null_resource" "cleanup" { 
+resource "null_resource" "cleanup" {
   depends_on = [
     aws_lambda_function.lambda_function
   ]
