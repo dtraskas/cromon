@@ -105,6 +105,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.pkg
 env/
 venv/
 ENV/
@@ -134,4 +135,5 @@ dmypy.json
 *.tfstate.backup
 *.terraform.lock.hcl
 *deploy.sh
+*destroy.sh
 *.tfplan

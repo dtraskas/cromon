@@ -17,19 +17,19 @@ module "run_test_role" {
   })
 }
 
-module "run_test" {
+module "cromon-api" {
   source = "./modules/lambda"
 
-  name_suffix = "run-test"
-  description = "Just a stub Lambda function returning 200."
+  name_suffix = "cromon-api"
+  description = "A Lambda function serving the cromon API."
 
   account_id   = local.account_id
   account_name = var.account_name
   application  = var.application
   environment  = var.environment
 
-  source_path = "${local.lambda_src_path}/run_test"
-  handler     = "app.lambda_handler"
+  source_path = "${local.lambda_src_path}/cromon_api"
+  handler     = "app.handler"
   runtime     = "python3.8"
 
   role        = module.run_test_role.arn
