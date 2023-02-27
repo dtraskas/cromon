@@ -6,7 +6,7 @@ app = FastAPI()
  
 @app.get("/")
 def get_root():
-    return {"message": "FastAPI running in a Lambda function"}
+    return {"message": "FastAPI running in a Lambda function as a test 11."}
  
  
 handler = Mangum(app)

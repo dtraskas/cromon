@@ -29,7 +29,7 @@ module "cromon-api" {
   environment  = var.environment
 
   source_path = "${local.lambda_src_path}/cromon_api"
-  handler     = "app.lambda_handler"
+  handler     = "app.handler"
   runtime     = "python3.8"
 
   role        = module.run_test_role.arn
