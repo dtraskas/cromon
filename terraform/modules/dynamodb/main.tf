@@ -1,43 +1,26 @@
-# resource "aws_dynamodb_table" "basic-dynamodb-table" {
-#   name           = local.table_name
-#   billing_mode   = "PROVISIONED"
-#   read_capacity  = var.read_capacity
-#   write_capacity = var.write_capacity
-#   hash_key       = var.hash_key
-#   range_key      = "GameTitle"
+resource "aws_dynamodb_table" "basic-dynamodb-table" {
+  name           = local.table_name
+  billing_mode   = "PROVISIONED"
+  read_capacity  = var.read_capacity
+  write_capacity = var.write_capacity
+  hash_key       = var.hash_key
+  range_key      = var.sort_key
 
-#   attribute {
-#     name = "UserId"
-#     type = "S"
-#   }
+  attribute {
+    name = var.hash_key
+    type = var.hash_key_type
+  }
 
-#   attribute {
-#     name = "GameTitle"
-#     type = "S"
-#   }
+  point_in_time_recovery {
+    enabled = var.backup_enabled
+  }
 
-#   attribute {
-#     name = "TopScore"
-#     type = "N"
-#   }
-
-#   ttl {
-#     attribute_name = "TimeToExist"
-#     enabled        = false
-#   }
-
-#   global_secondary_index {
-#     name               = "GameTitleIndex"
-#     hash_key           = "GameTitle"
-#     range_key          = "TopScore"
-#     write_capacity     = 10
-#     read_capacity      = 10
-#     projection_type    = "INCLUDE"
-#     non_key_attributes = ["UserId"]
-#   }
-
-#   tags = {
-#     Name        = "dynamodb-table-1"
-#     Environment = "production"
-#   }
-# }
+  tags = merge(
+    local.default_tags,
+    {
+      application = var.application
+      environment = var.environment
+    },
+    var.default_tags
+  )
+}

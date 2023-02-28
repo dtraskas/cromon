@@ -91,6 +91,7 @@ resource "aws_lambda_function" "lambda_function" {
     {
       application = var.application
       environment = var.environment
-    }
+    },
+    var.default_tags
   )
 }

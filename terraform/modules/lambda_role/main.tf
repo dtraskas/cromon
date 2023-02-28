@@ -36,6 +36,7 @@ EOF
     {
       application = var.application
       environment = var.environment
-    }
+    },
+    var.default_tags
   )
 }
