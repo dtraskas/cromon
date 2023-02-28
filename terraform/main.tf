@@ -35,4 +35,7 @@ module "cromon-api" {
   role        = module.run_test_role.arn
   memory_size = 256
   timeout     = 30
+  default_tags = {
+    purpose = "cronjob monitoring"
+  }
 }
