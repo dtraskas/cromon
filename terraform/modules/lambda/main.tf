@@ -41,7 +41,7 @@ resource "null_resource" "install_dependencies" {
   # Only re-run this if the dependencies or their versions
   # have changed since the last deployment with Terraform
   triggers = {
-    dependencies_versions = filemd5("${var.source_path}/requirements.txt")
+    always_run = "${timestamp()}"  
   }
 }
 
