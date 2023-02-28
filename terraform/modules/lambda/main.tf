@@ -41,7 +41,7 @@ resource "null_resource" "install_dependencies" {
   # Only re-run this if the dependencies or their versions
   # have changed since the last deployment with Terraform
   triggers = {
-    always_run = "${timestamp()}"  
+    always_run = "${timestamp()}"
   }
 }
 
