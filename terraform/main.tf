@@ -56,5 +56,5 @@ module "api_gateway" {
   integration_http_methods = "POST"
   lambda_name              = module.cromon_api.name
   lambda_arn               = module.cromon_api.invoke_arn
-  deployment_stage         = "deploy" 
+  deployment_stage         = "deploy"
 }
